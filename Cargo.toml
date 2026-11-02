@@ -17,7 +17,7 @@ serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 # JSON Schema `pattern` keywords (Rust regex syntax; constructs it lacks are reported as unsupported).
 regex = "1"
-sha2 = "0.10"
+sha2 = "0.11"
 thiserror = "2"
 yaml_serde = "0.10"
 # The YAML tokenizer yaml_serde already uses, called directly for a nesting
