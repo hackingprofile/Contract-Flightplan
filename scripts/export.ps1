@@ -13,6 +13,7 @@ $Allow = @(
   "NOTICE",
   "README.md",
   "CONTRIBUTING.md",
+  "SECURITY.md",
   "DCO",
   "rustfmt.toml",
   "src",

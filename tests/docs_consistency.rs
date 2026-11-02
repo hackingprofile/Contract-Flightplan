@@ -239,6 +239,7 @@ fn control_documents_stay_out_of_the_export_allowlist() {
             "NOTICE",
             "README.md",
             "CONTRIBUTING.md",
+            "SECURITY.md",
             "DCO",
             "rustfmt.toml",
             "src",
