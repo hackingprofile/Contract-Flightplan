@@ -1,0 +1,59 @@
+name: contract-flightplan
+description: >-
+  Compare two local OpenAPI contracts and write an offline review pack
+  (diff.json, report.html, report.json, report.md, summary.md). It verifies no
+  migration, so the report's verdict is "not run"; a verdict needs cfp report
+  with --migration, --proposal and --fixtures. Runs entirely inside the job; no
+  model provider is called and nothing is published.
+author: Contract Flightplan contributors
+inputs:
+  source:
+    description: Source OpenAPI 3.0/3.1 file, relative to the consumer workspace.
+    required: true
+  destination:
+    description: Destination OpenAPI 3.0/3.1 file, relative to the consumer workspace.
+    required: true
+  out-dir:
+    description: Directory that receives the review pack.
+    required: false
+    default: contract-flightplan-out
+outputs:
+  out-dir:
+    description: Directory that received the review pack.
+    value: ${{ steps.report.outputs.out-dir }}
+runs:
+  using: composite
+  steps:
+    - name: Build cfp from the action checkout
+      id: build
+      shell: bash
+      env:
+        CFP_ACTION_PATH: ${{ github.action_path }}
+      run: |
+        set -euo pipefail
+        # One explicit target directory for the build and the run: the caller's CARGO_TARGET_DIR
+        # when set (made absolute), else the action checkout's own target/.
+        CFP_TARGET="${CARGO_TARGET_DIR:-$CFP_ACTION_PATH/target}"
+        case "$CFP_TARGET" in /* | [A-Za-z]:*) ;; *) CFP_TARGET="$PWD/$CFP_TARGET" ;; esac
+        cargo build --release --locked --manifest-path "$CFP_ACTION_PATH/Cargo.toml" --target-dir "$CFP_TARGET"
+        echo "bin=$CFP_TARGET/release/cfp" >> "$GITHUB_OUTPUT"
+    - name: Compare and report
+      id: report
+      shell: bash
+      env:
+        CFP_ACTION_PATH: ${{ github.action_path }}
+        CFP_BIN: ${{ steps.build.outputs.bin }}
+        CFP_SOURCE: ${{ inputs.source }}
+        CFP_DESTINATION: ${{ inputs.destination }}
+        CFP_OUT: ${{ inputs.out-dir }}
+      run: |
+        set -euo pipefail
+        mkdir -p "$CFP_OUT"
+        "$CFP_BIN" compare --source "$CFP_SOURCE" --destination "$CFP_DESTINATION" --out "$CFP_OUT/diff.json"
+        "$CFP_BIN" report --source "$CFP_SOURCE" --destination "$CFP_DESTINATION" \
+          --html "$CFP_OUT/report.html" --json "$CFP_OUT/report.json" \
+          --md "$CFP_OUT/report.md" --job-summary "$CFP_OUT/summary.md"
+        if [ -n "${GITHUB_STEP_SUMMARY:-}" ]; then
+          cat "$CFP_OUT/summary.md" >> "$GITHUB_STEP_SUMMARY"
+        fi
+        echo "out-dir=$CFP_OUT" >> "$GITHUB_OUTPUT"

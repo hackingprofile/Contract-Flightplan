@@ -1,0 +1,23 @@
+openapi: 3.0.3
+info:
+  title: Example provider
+  version: '1'
+paths:
+  /users:
+    post:
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+                age:
+                  type: integer
+      responses:
+        '200':
+          description: ok

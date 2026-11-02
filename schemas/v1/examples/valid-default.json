@@ -1,0 +1,56 @@
+{
+  "schema_version": "1",
+  "kind": "proposal",
+  "id": "example-default",
+  "source_contract": {
+    "path": "packs/default-status/base.openapi.yaml"
+  },
+  "destination_contract": {
+    "path": "packs/default-status/next.openapi.yaml"
+  },
+  "rules": [
+    {
+      "id": "default-status-request",
+      "operation": "default",
+      "source": {
+        "operation": {
+          "method": "POST",
+          "path": "/widgets",
+          "operation_id": "createWidget"
+        },
+        "location": "request",
+        "field": "status"
+      },
+      "destination": {
+        "operation": {
+          "method": "POST",
+          "path": "/widgets",
+          "operation_id": "createWidget"
+        },
+        "location": "request",
+        "field": "status"
+      },
+      "parameters": {
+        "field": "status",
+        "value": "active"
+      },
+      "preconditions": [
+        "status may be absent",
+        "explicit null is not a missing field"
+      ],
+      "postconditions": [
+        "missing status becomes active",
+        "explicit null is not replaced"
+      ],
+      "evidence": "destination requires status; missing values use an explicit default",
+      "lossiness": "default_inserted",
+      "reversibility": "irreversible",
+      "fixture_refs": [
+        "request.positive.json",
+        "request.null.json",
+        "request.malformed.json",
+        "request.present.json"
+      ]
+    }
+  ]
+}

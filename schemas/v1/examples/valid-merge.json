@@ -1,0 +1,58 @@
+{
+  "schema_version": "1",
+  "kind": "proposal",
+  "id": "example-merge",
+  "source_contract": {
+    "path": "packs/merge-display/base.openapi.yaml"
+  },
+  "destination_contract": {
+    "path": "packs/merge-display/next.openapi.yaml"
+  },
+  "rules": [
+    {
+      "id": "merge-display-request",
+      "operation": "merge",
+      "source": {
+        "operation": {
+          "method": "POST",
+          "path": "/people",
+          "operation_id": "createPerson"
+        },
+        "location": "request",
+        "field": "first_name"
+      },
+      "destination": {
+        "operation": {
+          "method": "POST",
+          "path": "/people",
+          "operation_id": "createPerson"
+        },
+        "location": "request",
+        "field": "display_name"
+      },
+      "parameters": {
+        "fields": [
+          "first_name",
+          "last_name"
+        ],
+        "into": "display_name",
+        "separator": " "
+      },
+      "preconditions": [
+        "typed against source schema"
+      ],
+      "postconditions": [
+        "typed against destination schema"
+      ],
+      "evidence": "request merge",
+      "lossiness": "merged",
+      "reversibility": "partially_reversible",
+      "fixture_refs": [
+        "request.positive.json",
+        "request.missing.json",
+        "request.null.json",
+        "request.collision.json"
+      ]
+    }
+  ]
+}

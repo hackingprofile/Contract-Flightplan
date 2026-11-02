@@ -1,0 +1,155 @@
+{
+  "schema_version": "1",
+  "kind": "migration",
+  "id": "enum-map-color",
+  "source_contract": {
+    "path": "packs/enum-map-color/base.openapi.yaml",
+    "digest": "sha256:d2aecec626e58d758d198d48b26a34573a686427cac7b3a0979de0d409963ceb"
+  },
+  "destination_contract": {
+    "path": "packs/enum-map-color/next.openapi.yaml",
+    "digest": "sha256:209e38976123838f95395254480edfe6c5534a66da6ddf7864a1dae34dcd1fc6"
+  },
+  "rules": [
+    {
+      "id": "enum-map-color-request",
+      "operation": "enum_map",
+      "source": {
+        "operation": {
+          "method": "POST",
+          "path": "/swatches",
+          "operation_id": "createSwatch"
+        },
+        "location": "request",
+        "field": "color"
+      },
+      "destination": {
+        "operation": {
+          "method": "POST",
+          "path": "/swatches",
+          "operation_id": "createSwatch"
+        },
+        "location": "request",
+        "field": "color"
+      },
+      "parameters": {
+        "field": "color",
+        "map": {
+          "BLUE": "blue",
+          "GREEN": "green",
+          "RED": "red"
+        },
+        "unmapped": "fail"
+      },
+      "preconditions": [
+        "color is a mapped source enum value"
+      ],
+      "postconditions": [
+        "color is a destination enum value"
+      ],
+      "evidence": "uppercase source colors map onto lowercase destination colors",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": [
+        "request.positive.json",
+        "request.unknown.json",
+        "request.missing.json",
+        "request.null.json"
+      ]
+    },
+    {
+      "id": "enum-map-color-response",
+      "operation": "enum_map",
+      "source": {
+        "operation": {
+          "method": "POST",
+          "path": "/swatches",
+          "operation_id": "createSwatch"
+        },
+        "location": "response",
+        "response_status": "200",
+        "field": "color"
+      },
+      "destination": {
+        "operation": {
+          "method": "POST",
+          "path": "/swatches",
+          "operation_id": "createSwatch"
+        },
+        "location": "response",
+        "response_status": "200",
+        "field": "color"
+      },
+      "parameters": {
+        "field": "color",
+        "map": {
+          "BLUE": "blue",
+          "GREEN": "green",
+          "RED": "red"
+        },
+        "unmapped": "fail"
+      },
+      "preconditions": [
+        "color is a mapped source enum value"
+      ],
+      "postconditions": [
+        "color is a destination enum value"
+      ],
+      "evidence": "POST /swatches 200 response uses the same enum map",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": [
+        "response.positive.json",
+        "response.unknown.json"
+      ]
+    }
+  ],
+  "fixtures": {
+    "catalog.json": "sha256:bbf255988992f0a5d226cfdca9e0ee194fe81444de0aa3bd6b2b91728a400b90",
+    "request.missing.json": "sha256:eca975564f60db626cdaabf73e554bd5afa58bf86fa3c5662c0b174bdd3ddfe5",
+    "request.null.json": "sha256:88e320ce941a102e79710fab8480e6fda0657ac14b56de50677a4ef381f18b16",
+    "request.positive.json": "sha256:4c8b00534579e57dee2bc93f203b4c3530d22b402832f91ce08be6844a70923b",
+    "request.unknown.json": "sha256:de5d57240199be5511315e2aef73f8d71f777534a6c74f8dcf055d1e5dd48bb0",
+    "response.positive.json": "sha256:0351acbce212086f3a443939a6e8cec412c6748c4ac26657616d25adef18e701",
+    "response.unknown.json": "sha256:f0a7451ab6791f15261251658fb246399f82a6aebb5ad1e50694afcde87c3d80"
+  },
+  "lifecycle": "approved",
+  "approval": {
+    "reviewer": "local-reviewer",
+    "approved_at": "2026-09-30T00:00:00Z",
+    "bound_digests": {
+      "proposal": "sha256:6286825dfb7398bfb83f8de7e518402b2a64dc1f1a0c9133e14f2aa51c0ce08a",
+      "rules": "sha256:19bbce4d5173c54ef2b77b4aa67fccd715bc6e67a29a3b5d8df85e712362db08",
+      "source_contract": "sha256:d2aecec626e58d758d198d48b26a34573a686427cac7b3a0979de0d409963ceb",
+      "destination_contract": "sha256:209e38976123838f95395254480edfe6c5534a66da6ddf7864a1dae34dcd1fc6",
+      "fixtures": {
+        "catalog.json": "sha256:bbf255988992f0a5d226cfdca9e0ee194fe81444de0aa3bd6b2b91728a400b90",
+        "request.missing.json": "sha256:eca975564f60db626cdaabf73e554bd5afa58bf86fa3c5662c0b174bdd3ddfe5",
+        "request.null.json": "sha256:88e320ce941a102e79710fab8480e6fda0657ac14b56de50677a4ef381f18b16",
+        "request.positive.json": "sha256:4c8b00534579e57dee2bc93f203b4c3530d22b402832f91ce08be6844a70923b",
+        "request.unknown.json": "sha256:de5d57240199be5511315e2aef73f8d71f777534a6c74f8dcf055d1e5dd48bb0",
+        "response.positive.json": "sha256:0351acbce212086f3a443939a6e8cec412c6748c4ac26657616d25adef18e701",
+        "response.unknown.json": "sha256:f0a7451ab6791f15261251658fb246399f82a6aebb5ad1e50694afcde87c3d80"
+      },
+      "review_record": "sha256:667146c6bb12cc07b8131e56880d90ff1ed01a865cf76a377167cbf944b19839"
+    },
+    "identity_boundary": "Local reviewer names and content digests are an auditable workflow, not remote identity authentication or tamper-proof signatures."
+  },
+  "history": [
+    {
+      "at": "2026-09-30T00:00:00Z",
+      "action": "reviewed",
+      "actor": "local-reviewer",
+      "digest": "sha256:667146c6bb12cc07b8131e56880d90ff1ed01a865cf76a377167cbf944b19839",
+      "note": "review record bound",
+      "prev": null
+    },
+    {
+      "at": "2026-09-30T00:00:00Z",
+      "action": "approved",
+      "actor": "local-reviewer",
+      "digest": "sha256:e7ef56abbc360536def44d3ae1ca0a9743efc8f1585d9fe4423589fc2ef9c070",
+      "prev": "sha256:afa48c4e979a1660e2085753530647644588256199346e708207757886889274"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": "1",
+  "kind": "proposal",
+  "id": "safe-cast-count",
+  "source_contract": { "path": "base.openapi.yaml" },
+  "destination_contract": { "path": "next.openapi.yaml" },
+  "rules": [
+    {
+      "id": "safe-cast-count-request",
+      "operation": "safe_cast",
+      "source": {
+        "operation": { "method": "POST", "path": "/counts", "operation_id": "createCount" },
+        "location": "request",
+        "field": "count"
+      },
+      "destination": {
+        "operation": { "method": "POST", "path": "/counts", "operation_id": "createCount" },
+        "location": "request",
+        "field": "count"
+      },
+      "parameters": {"field":"count","from":"string","to":"integer"},
+      "preconditions": ["typed against source schema"],
+      "postconditions": ["typed against destination schema"],
+      "evidence": "request safe_cast",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": ["request.positive.json", "request.malformed.json", "request.overflow.json", "request.missing.json"]
+    },
+    {
+      "id": "safe-cast-count-response",
+      "operation": "safe_cast",
+      "source": {
+        "operation": { "method": "POST", "path": "/counts", "operation_id": "createCount" },
+        "location": "response",
+        "response_status": "200",
+        "field": "count"
+      },
+      "destination": {
+        "operation": { "method": "POST", "path": "/counts", "operation_id": "createCount" },
+        "location": "response",
+        "response_status": "200",
+        "field": "count"
+      },
+      "parameters": {"field":"count","from":"string","to":"integer"},
+      "preconditions": ["typed against source schema"],
+      "postconditions": ["typed against destination schema"],
+      "evidence": "response safe_cast",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": ["response.positive.json", "response.malformed.json"]
+    }
+  ]
+}

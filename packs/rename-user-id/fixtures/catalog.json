@@ -1,0 +1,12 @@
+{
+  "schema_version": "1",
+  "items": [
+    {"id": "request-positive", "path": "request.positive.json", "rule_ids": ["rename-user-request"], "expect": "success", "description": "Request fixture (id, name) that maps cleanly and validates against the destination.", "version": "1"},
+    {"id": "request-collision", "path": "request.collision.json", "rule_ids": ["rename-user-request"], "expect": "collision", "description": "Request fixture (id, user_id, name) that already carries the field the rule would write.", "version": "1"},
+    {"id": "request-missing", "path": "request.missing.json", "rule_ids": ["rename-user-request"], "expect": "missing", "description": "Request fixture (name) that lacks the field the rule reads.", "version": "1"},
+    {"id": "request-malformed", "path": "request.malformed.json", "rule_ids": ["rename-user-request"], "expect": "malformed", "description": "Request fixture (id, name) that carries a value of the wrong type or shape.", "version": "1"},
+    {"id": "request-script", "path": "request.script.json", "rule_ids": ["rename-user-request"], "expect": "success", "description": "Request fixture (id, name) that maps cleanly and validates against the destination.", "version": "1"},
+    {"id": "response-positive", "path": "response.positive.json", "rule_ids": ["rename-user-response"], "expect": "success", "description": "Response fixture (id, name) that maps cleanly and validates against the destination.", "version": "1"},
+    {"id": "response-collision", "path": "response.collision.json", "rule_ids": ["rename-user-response"], "expect": "collision", "description": "Response fixture (id, user_id, name) that already carries the field the rule would write.", "version": "1"}
+  ]
+}

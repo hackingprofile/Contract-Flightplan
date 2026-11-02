@@ -1,0 +1,32 @@
+openapi: 3.0.3
+info:
+  title: Mail API
+  version: "1.1.0"
+paths:
+  /mail:
+    post:
+      operationId: createMail
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Item"
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+components:
+  schemas:
+    Item:
+      type: object
+      additionalProperties: false
+      required: [name, email]
+      properties:
+        name:
+          type: string
+        email:
+          type: string

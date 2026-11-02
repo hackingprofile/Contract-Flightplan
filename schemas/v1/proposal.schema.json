@@ -1,0 +1,278 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contract-flightplan.local/schemas/v1/proposal.schema.json",
+  "title": "Contract Flightplan proposal",
+  "description": "A non-executable mapping proposal. It must not carry approval fields; approval is added only by `cfp approve`. The shared `$defs` entries are byte-identical to migration.schema.json (enforced by tests/schema_contract.rs) so this file validates on its own.",
+  "type": "object",
+  "unevaluatedProperties": false,
+  "required": ["schema_version", "kind", "id", "source_contract", "destination_contract", "rules"],
+  "not": { "required": ["approval"] },
+  "properties": {
+    "schema_version": { "const": "1" },
+    "kind": { "const": "proposal" },
+    "id": { "$ref": "#/$defs/name" },
+    "source_contract": { "$ref": "#/$defs/pathHint" },
+    "destination_contract": { "$ref": "#/$defs/pathHint" },
+    "rules": { "type": "array", "maxItems": 32, "items": { "$ref": "#/$defs/rule" } },
+    "alternatives": {
+      "description": "Other candidates a proposer considered; shown at review, never executed.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["rule_id", "operation", "parameters", "why"],
+        "properties": {
+          "rule_id": { "type": "string" },
+          "operation": { "type": "string" },
+          "parameters": { "type": "object" },
+          "why": { "type": "string" }
+        }
+      }
+    },
+    "assumptions": { "type": "array", "items": { "type": "string" } }
+  },
+  "$defs": {
+    "pathHint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 }
+      }
+    },
+    "name": { "type": "string", "minLength": 1 },
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "digestedFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "digest"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "digest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "jsonType": { "enum": ["string", "integer", "number", "boolean", "object", "array"] },
+    "nameList": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/name" }
+    },
+    "mapTable": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": true
+    },
+    "unmapped": {
+      "oneOf": [
+        { "const": "fail" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["policy", "value"],
+          "properties": {
+            "policy": { "const": "const" },
+            "value": {}
+          }
+        }
+      ]
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operation", "location", "field"],
+      "properties": {
+        "operation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["method", "path"],
+          "properties": {
+            "method": { "enum": ["GET", "PUT", "POST", "DELETE", "OPTIONS", "HEAD", "PATCH", "TRACE"] },
+            "path": { "type": "string", "pattern": "^/" },
+            "operation_id": { "type": "string" }
+          }
+        },
+        "location": { "enum": ["request", "response"] },
+        "response_status": { "type": "string", "pattern": "^([1-5][0-9X]{2}|default)$" },
+        "field": { "$ref": "#/$defs/name" }
+      }
+    },
+    "rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "operation", "source", "destination", "parameters", "preconditions", "postconditions", "evidence", "lossiness", "reversibility", "fixture_refs"],
+      "properties": {
+        "id": { "$ref": "#/$defs/name" },
+        "operation": {
+          "enum": ["rename", "copy", "default", "enum_map", "drop", "required_field", "safe_cast", "unit_conversion", "split", "merge", "array_map", "array_filter", "pagination"]
+        },
+        "source": { "$ref": "#/$defs/target" },
+        "destination": { "$ref": "#/$defs/target" },
+        "parameters": { "type": "object" },
+        "preconditions": { "type": "array", "items": { "type": "string" } },
+        "postconditions": { "type": "array", "items": { "type": "string" } },
+        "evidence": { "type": "string" },
+        "lossiness": { "enum": ["none", "dropped", "default_inserted", "enum_many_to_one", "rounded", "merged"] },
+        "reversibility": { "enum": ["reversible", "irreversible", "partially_reversible"] },
+        "fixture_refs": { "type": "array", "items": { "type": "string" } }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "operation": { "const": "rename" },
+            "parameters": {
+              "type": "object", "additionalProperties": false, "required": ["from", "to"],
+              "properties": { "from": { "$ref": "#/$defs/name" }, "to": { "$ref": "#/$defs/name" } }
+            }
+          }
+        },
+        {
+          "properties": {
+            "operation": { "const": "copy" },
+            "parameters": {
+              "type": "object", "additionalProperties": false, "required": ["from", "to"],
+              "properties": { "from": { "$ref": "#/$defs/name" }, "to": { "$ref": "#/$defs/name" } }
+            }
+          }
+        },
+        {
+          "properties": {
+            "operation": { "const": "default" },
+            "parameters": {
+              "type": "object", "additionalProperties": false, "required": ["field", "value"],
+              "properties": { "field": { "$ref": "#/$defs/name" }, "value": {} }
+            }
+          }
+        },
+        {
+          "properties": {
+            "operation": { "const": "enum_map" },
+            "parameters": {
+              "type": "object", "additionalProperties": false, "required": ["field", "map"],
+              "properties": {
+                "field": { "$ref": "#/$defs/name" },
+                "map": { "$ref": "#/$defs/mapTable" },
+                "unmapped": { "$ref": "#/$defs/unmapped" }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "operation": { "const": "drop" },
+            "parameters": {
+              "type": "object", "additionalProperties": false, "required": ["field"],
+              "properties": { "field": { "$ref": "#/$defs/name" } }
+            }
+          }
+        },
+        {
+          "properties": {
+            "operation": { "const": "required_field" },
+            "parameters": {
+              "type": "object", "additionalProperties": false, "required": ["field"],
+              "properties": { "field": { "$ref": "#/$defs/name" } }
+            }
+          }
+        },
+        {
+          "properties": {
+            "operation": { "const": "safe_cast" },
+            "parameters": {
+              "type": "object", "additionalProperties": false, "required": ["field", "from", "to"],
+              "properties": {
+                "field": { "$ref": "#/$defs/name" },
+                "from": { "$ref": "#/$defs/jsonType" },
+                "to": { "$ref": "#/$defs/jsonType" },
+                "format": { "enum": ["email"] }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "operation": { "const": "unit_conversion" },
+            "parameters": {
+              "type": "object", "additionalProperties": false,
+              "required": ["field", "from_unit", "to_unit", "factor_num", "factor_den", "rounding"],
+              "properties": {
+                "field": { "$ref": "#/$defs/name" },
+                "from_unit": { "$ref": "#/$defs/name" },
+                "to_unit": { "$ref": "#/$defs/name" },
+                "factor_num": { "type": "integer" },
+                "factor_den": { "type": "integer", "not": { "const": 0 } },
+                "rounding": { "enum": ["exact", "floor", "ceil", "round"] }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "operation": { "const": "split" },
+            "parameters": {
+              "type": "object", "additionalProperties": false, "required": ["field", "into", "separator"],
+              "properties": {
+                "field": { "$ref": "#/$defs/name" },
+                "into": { "$ref": "#/$defs/nameList" },
+                "separator": { "type": "string", "minLength": 1 }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "operation": { "const": "merge" },
+            "parameters": {
+              "type": "object", "additionalProperties": false, "required": ["fields", "into", "separator"],
+              "properties": {
+                "fields": { "$ref": "#/$defs/nameList" },
+                "into": { "$ref": "#/$defs/name" },
+                "separator": { "type": "string" }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "operation": { "const": "array_map" },
+            "parameters": {
+              "type": "object", "additionalProperties": false, "required": ["field", "map"],
+              "properties": {
+                "field": { "$ref": "#/$defs/name" },
+                "map": { "$ref": "#/$defs/mapTable" },
+                "unmapped": { "$ref": "#/$defs/unmapped" }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "operation": { "const": "array_filter" },
+            "parameters": {
+              "type": "object", "additionalProperties": false, "required": ["field", "drop_null"],
+              "properties": {
+                "field": { "$ref": "#/$defs/name" },
+                "drop_null": { "type": "boolean" }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "operation": { "const": "pagination" },
+            "parameters": {
+              "type": "object", "additionalProperties": false,
+              "required": ["from_items", "from_token", "to_data", "to_cursor"],
+              "properties": {
+                "from_items": { "$ref": "#/$defs/name" },
+                "from_token": { "$ref": "#/$defs/name" },
+                "to_data": { "$ref": "#/$defs/name" },
+                "to_cursor": { "$ref": "#/$defs/name" }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

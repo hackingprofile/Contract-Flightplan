@@ -1,0 +1,53 @@
+{
+  "schema_version": "1",
+  "kind": "proposal",
+  "id": "rename-user-id",
+  "source_contract": { "path": "base.openapi.yaml" },
+  "destination_contract": { "path": "next.openapi.yaml" },
+  "rules": [
+    {
+      "id": "rename-user-request",
+      "operation": "rename",
+      "source": {
+        "operation": { "method": "POST", "path": "/users", "operation_id": "createUser" },
+        "location": "request",
+        "field": "id"
+      },
+      "destination": {
+        "operation": { "method": "POST", "path": "/users", "operation_id": "createUser" },
+        "location": "request",
+        "field": "user_id"
+      },
+      "parameters": { "from": "id", "to": "user_id" },
+      "preconditions": ["source field id is present", "destination field user_id is absent"],
+      "postconditions": ["user_id holds the previous id value", "id is absent"],
+      "evidence": "POST /users request schema renamed id to user_id",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": ["request.positive.json", "request.collision.json", "request.missing.json", "request.malformed.json", "request.script.json"]
+    },
+    {
+      "id": "rename-user-response",
+      "operation": "rename",
+      "source": {
+        "operation": { "method": "POST", "path": "/users", "operation_id": "createUser" },
+        "location": "response",
+        "response_status": "200",
+        "field": "id"
+      },
+      "destination": {
+        "operation": { "method": "POST", "path": "/users", "operation_id": "createUser" },
+        "location": "response",
+        "response_status": "200",
+        "field": "user_id"
+      },
+      "parameters": { "from": "id", "to": "user_id" },
+      "preconditions": ["source field id is present", "destination field user_id is absent"],
+      "postconditions": ["user_id holds the previous id value", "id is absent"],
+      "evidence": "POST /users 200 response schema renamed id to user_id",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": ["response.positive.json", "response.collision.json"]
+    }
+  ]
+}

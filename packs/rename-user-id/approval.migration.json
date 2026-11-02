@@ -1,0 +1,152 @@
+{
+  "schema_version": "1",
+  "kind": "migration",
+  "id": "rename-user-id",
+  "source_contract": {
+    "path": "packs/rename-user-id/base.openapi.yaml",
+    "digest": "sha256:207385bc73907e323f248e687998bda4ed313365a2049e7de3ca6478ffe19de0"
+  },
+  "destination_contract": {
+    "path": "packs/rename-user-id/next.openapi.yaml",
+    "digest": "sha256:2fba595c646fbe1228b1a1f68fb67ee2f122cd777c2e9656af1d22c2c7349f96"
+  },
+  "rules": [
+    {
+      "id": "rename-user-request",
+      "operation": "rename",
+      "source": {
+        "operation": {
+          "method": "POST",
+          "path": "/users",
+          "operation_id": "createUser"
+        },
+        "location": "request",
+        "field": "id"
+      },
+      "destination": {
+        "operation": {
+          "method": "POST",
+          "path": "/users",
+          "operation_id": "createUser"
+        },
+        "location": "request",
+        "field": "user_id"
+      },
+      "parameters": {
+        "from": "id",
+        "to": "user_id"
+      },
+      "preconditions": [
+        "source field id is present",
+        "destination field user_id is absent"
+      ],
+      "postconditions": [
+        "user_id holds the previous id value",
+        "id is absent"
+      ],
+      "evidence": "POST /users request schema renamed id to user_id",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": [
+        "request.positive.json",
+        "request.collision.json",
+        "request.missing.json",
+        "request.malformed.json",
+        "request.script.json"
+      ]
+    },
+    {
+      "id": "rename-user-response",
+      "operation": "rename",
+      "source": {
+        "operation": {
+          "method": "POST",
+          "path": "/users",
+          "operation_id": "createUser"
+        },
+        "location": "response",
+        "response_status": "200",
+        "field": "id"
+      },
+      "destination": {
+        "operation": {
+          "method": "POST",
+          "path": "/users",
+          "operation_id": "createUser"
+        },
+        "location": "response",
+        "response_status": "200",
+        "field": "user_id"
+      },
+      "parameters": {
+        "from": "id",
+        "to": "user_id"
+      },
+      "preconditions": [
+        "source field id is present",
+        "destination field user_id is absent"
+      ],
+      "postconditions": [
+        "user_id holds the previous id value",
+        "id is absent"
+      ],
+      "evidence": "POST /users 200 response schema renamed id to user_id",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": [
+        "response.positive.json",
+        "response.collision.json"
+      ]
+    }
+  ],
+  "fixtures": {
+    "catalog.json": "sha256:6804a2c2fb6e6d243a716f32f09982da032ab9b46f6d0e12dbc3b85118335a7a",
+    "request.collision.json": "sha256:86c3ef234bc5d935dfc830da9a030f399890b47d45ad7e6964a9be62d08f584d",
+    "request.malformed.json": "sha256:2e21024a2c5f5704ec3165ec09008589782208cb613ce43fbcace2a7490ef4ee",
+    "request.missing.json": "sha256:aa3eae467c7fefe50dffe17bd20f7952d92ce26bde047db602e9f600a4b6e03d",
+    "request.positive.json": "sha256:610107722e23afd110322351e11018fdad55df338805728106f0500615de79cf",
+    "request.script.json": "sha256:3b72fb99f1ba61a372c29581975cede2455b316a0a20b8ed62092f7502362d42",
+    "response.collision.json": "sha256:86c3ef234bc5d935dfc830da9a030f399890b47d45ad7e6964a9be62d08f584d",
+    "response.positive.json": "sha256:610107722e23afd110322351e11018fdad55df338805728106f0500615de79cf"
+  },
+  "lifecycle": "approved",
+  "approval": {
+    "reviewer": "local-reviewer",
+    "approved_at": "2026-09-30T00:00:00Z",
+    "bound_digests": {
+      "proposal": "sha256:a4c837f9e68cdd5bce6c8bc9739a8d1f8d91f554b7932e254ad21b084570a9f6",
+      "rules": "sha256:221bc9332006d9cfae752ea9aa87b393b46112cf3405858f94f345e923ab9fbf",
+      "source_contract": "sha256:207385bc73907e323f248e687998bda4ed313365a2049e7de3ca6478ffe19de0",
+      "destination_contract": "sha256:2fba595c646fbe1228b1a1f68fb67ee2f122cd777c2e9656af1d22c2c7349f96",
+      "fixtures": {
+        "catalog.json": "sha256:6804a2c2fb6e6d243a716f32f09982da032ab9b46f6d0e12dbc3b85118335a7a",
+        "request.collision.json": "sha256:86c3ef234bc5d935dfc830da9a030f399890b47d45ad7e6964a9be62d08f584d",
+        "request.malformed.json": "sha256:2e21024a2c5f5704ec3165ec09008589782208cb613ce43fbcace2a7490ef4ee",
+        "request.missing.json": "sha256:aa3eae467c7fefe50dffe17bd20f7952d92ce26bde047db602e9f600a4b6e03d",
+        "request.positive.json": "sha256:610107722e23afd110322351e11018fdad55df338805728106f0500615de79cf",
+        "request.script.json": "sha256:3b72fb99f1ba61a372c29581975cede2455b316a0a20b8ed62092f7502362d42",
+        "response.collision.json": "sha256:86c3ef234bc5d935dfc830da9a030f399890b47d45ad7e6964a9be62d08f584d",
+        "response.positive.json": "sha256:610107722e23afd110322351e11018fdad55df338805728106f0500615de79cf"
+      },
+      "review_record": "sha256:17b510d063a885763b9248ddd8cd51902ce872855791daa341abe0c046c2fb7e"
+    },
+    "identity_boundary": "Local reviewer names and content digests are an auditable workflow, not remote identity authentication or tamper-proof signatures."
+  },
+  "history": [
+    {
+      "at": "2026-09-30T00:00:00Z",
+      "action": "reviewed",
+      "actor": "local-reviewer",
+      "digest": "sha256:17b510d063a885763b9248ddd8cd51902ce872855791daa341abe0c046c2fb7e",
+      "note": "review record bound",
+      "prev": null
+    },
+    {
+      "at": "2026-09-30T00:00:00Z",
+      "action": "approved",
+      "actor": "local-reviewer",
+      "digest": "sha256:7397d8dda936369987330337a49793b9d074e05ca09dc5a95587cbd9c1d63bb0",
+      "prev": "sha256:63bdd8e3e36792b9bcb70a5279ee0f138aa918faf5576dfe8ec5d93ba7bc27a1"
+    }
+  ]
+}

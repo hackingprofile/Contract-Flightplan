@@ -1,0 +1,30 @@
+openapi: 3.0.3
+info:
+  title: Counts API
+  version: "1.1.0"
+paths:
+  /counts:
+    post:
+      operationId: createCount
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Item"
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+components:
+  schemas:
+    Item:
+      type: object
+      additionalProperties: false
+      required: [count]
+      properties:
+        count:
+          type: integer

@@ -1,0 +1,17 @@
+# Ordinary text is stored with LF. A later line overrides an earlier one, so
+# the byte-exact rules below win over this default.
+* text=auto eol=lf
+
+# Approvals bind contracts, rules, catalogs and fixtures by SHA-256 of their
+# exact bytes. A line-ending conversion on checkout (core.autocrlf) changes
+# those bytes and makes every approval stale, so Git must store and check out
+# these files exactly as committed.
+packs/** -text
+fixtures/** -text
+schemas/** -text
+*.openapi.yaml -text
+*.openapi.yml -text
+*.openapi.json -text
+*.migration.json -text
+*.proposal.json -text
+catalog.json -text

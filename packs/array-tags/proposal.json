@@ -1,0 +1,97 @@
+{
+  "schema_version": "1",
+  "kind": "proposal",
+  "id": "array-tags",
+  "source_contract": { "path": "base.openapi.yaml" },
+  "destination_contract": { "path": "next.openapi.yaml" },
+  "rules": [
+    {
+      "id": "array-filter-request",
+      "operation": "array_filter",
+      "source": {
+        "operation": { "method": "POST", "path": "/tags", "operation_id": "createTags" },
+        "location": "request",
+        "field": "tags"
+      },
+      "destination": {
+        "operation": { "method": "POST", "path": "/tags", "operation_id": "createTags" },
+        "location": "request",
+        "field": "tags"
+      },
+      "parameters": { "field": "tags", "drop_null": true },
+      "preconditions": ["tags is an array"],
+      "postconditions": ["null items removed"],
+      "evidence": "filter null tags",
+      "lossiness": "dropped",
+      "reversibility": "irreversible",
+      "fixture_refs": ["request.positive.json", "request.null-item.json"]
+    },
+    {
+      "id": "array-map-request",
+      "operation": "array_map",
+      "source": {
+        "operation": { "method": "POST", "path": "/tags", "operation_id": "createTags" },
+        "location": "request",
+        "field": "tags"
+      },
+      "destination": {
+        "operation": { "method": "POST", "path": "/tags", "operation_id": "createTags" },
+        "location": "request",
+        "field": "tags"
+      },
+      "parameters": { "field": "tags", "map": { "RED": "red", "BLUE": "blue", "GREEN": "green" }, "unmapped": "fail" },
+      "preconditions": ["tags are mapped enums"],
+      "postconditions": ["destination enums"],
+      "evidence": "map tag enums",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": ["request.positive.json", "request.unknown.json", "request.missing.json", "request.malformed.json"]
+    },
+    {
+      "id": "array-filter-response",
+      "operation": "array_filter",
+      "source": {
+        "operation": { "method": "POST", "path": "/tags", "operation_id": "createTags" },
+        "location": "response",
+        "response_status": "200",
+        "field": "tags"
+      },
+      "destination": {
+        "operation": { "method": "POST", "path": "/tags", "operation_id": "createTags" },
+        "location": "response",
+        "response_status": "200",
+        "field": "tags"
+      },
+      "parameters": { "field": "tags", "drop_null": true },
+      "preconditions": ["tags is an array"],
+      "postconditions": ["null items removed"],
+      "evidence": "filter null tags response",
+      "lossiness": "dropped",
+      "reversibility": "irreversible",
+      "fixture_refs": ["response.positive.json"]
+    },
+    {
+      "id": "array-map-response",
+      "operation": "array_map",
+      "source": {
+        "operation": { "method": "POST", "path": "/tags", "operation_id": "createTags" },
+        "location": "response",
+        "response_status": "200",
+        "field": "tags"
+      },
+      "destination": {
+        "operation": { "method": "POST", "path": "/tags", "operation_id": "createTags" },
+        "location": "response",
+        "response_status": "200",
+        "field": "tags"
+      },
+      "parameters": { "field": "tags", "map": { "RED": "red", "BLUE": "blue", "GREEN": "green" }, "unmapped": "fail" },
+      "preconditions": ["tags are mapped enums"],
+      "postconditions": ["destination enums"],
+      "evidence": "map tag enums response",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": ["response.positive.json", "response.unknown.json"]
+    }
+  ]
+}

@@ -1,0 +1,147 @@
+{
+  "schema_version": "1",
+  "kind": "migration",
+  "id": "default-status",
+  "source_contract": {
+    "path": "packs/default-status/base.openapi.yaml",
+    "digest": "sha256:03afe2d69844604c7167c23b5023a5fa190db8ec918cbdd204bdcdc9703ffebe"
+  },
+  "destination_contract": {
+    "path": "packs/default-status/next.openapi.yaml",
+    "digest": "sha256:da33d7b9ff126ecd204fc0ce6beecadd0cdc7416cf3df2625befd991b7f2da81"
+  },
+  "rules": [
+    {
+      "id": "default-status-request",
+      "operation": "default",
+      "source": {
+        "operation": {
+          "method": "POST",
+          "path": "/widgets",
+          "operation_id": "createWidget"
+        },
+        "location": "request",
+        "field": "status"
+      },
+      "destination": {
+        "operation": {
+          "method": "POST",
+          "path": "/widgets",
+          "operation_id": "createWidget"
+        },
+        "location": "request",
+        "field": "status"
+      },
+      "parameters": {
+        "field": "status",
+        "value": "active"
+      },
+      "preconditions": [
+        "status may be absent",
+        "explicit null is not a missing field"
+      ],
+      "postconditions": [
+        "missing status becomes active",
+        "explicit null is not replaced"
+      ],
+      "evidence": "destination requires status; missing values use an explicit default",
+      "lossiness": "default_inserted",
+      "reversibility": "irreversible",
+      "fixture_refs": [
+        "request.positive.json",
+        "request.null.json",
+        "request.malformed.json",
+        "request.present.json"
+      ]
+    },
+    {
+      "id": "default-status-response",
+      "operation": "default",
+      "source": {
+        "operation": {
+          "method": "POST",
+          "path": "/widgets",
+          "operation_id": "createWidget"
+        },
+        "location": "response",
+        "response_status": "200",
+        "field": "status"
+      },
+      "destination": {
+        "operation": {
+          "method": "POST",
+          "path": "/widgets",
+          "operation_id": "createWidget"
+        },
+        "location": "response",
+        "response_status": "200",
+        "field": "status"
+      },
+      "parameters": {
+        "field": "status",
+        "value": "active"
+      },
+      "preconditions": [
+        "status may be absent"
+      ],
+      "postconditions": [
+        "missing status becomes active"
+      ],
+      "evidence": "POST /widgets 200 response uses the same default",
+      "lossiness": "default_inserted",
+      "reversibility": "irreversible",
+      "fixture_refs": [
+        "response.positive.json",
+        "response.null.json"
+      ]
+    }
+  ],
+  "fixtures": {
+    "catalog.json": "sha256:f3269da55084bab3c5e9ef053eccee8d8ce2b465a22f541d5cd8e3ccfe914486",
+    "request.malformed.json": "sha256:5137acae4894269f433ebcd5fb2da1cfa9d2d353a0141a7a5e074e8b524fc452",
+    "request.null.json": "sha256:44deb3f5fcb21690346c5113967a32b5fd736a5763fdade82fad93c5edae27bf",
+    "request.positive.json": "sha256:0b7c0389460244c5c1ce68783bc20f18d42d5e2fdd2d65213ef4a6ef6db75abe",
+    "request.present.json": "sha256:26f918b72d7e617b73faa0d99e7ed74181c89a8d9c2c3dadae3a2af9b5aa729d",
+    "response.null.json": "sha256:44deb3f5fcb21690346c5113967a32b5fd736a5763fdade82fad93c5edae27bf",
+    "response.positive.json": "sha256:0b7c0389460244c5c1ce68783bc20f18d42d5e2fdd2d65213ef4a6ef6db75abe"
+  },
+  "lifecycle": "approved",
+  "approval": {
+    "reviewer": "local-reviewer",
+    "approved_at": "2026-09-30T00:00:00Z",
+    "bound_digests": {
+      "proposal": "sha256:930ff90a9b5b6a5179cd100ce65ec0a1de6cd30e09beb26ee8a52ac6b6dbb6dd",
+      "rules": "sha256:af06c309a94d17c1d83a87c6e0bc8ecf8ae93743bc09f424f73e5ef4a8f967b5",
+      "source_contract": "sha256:03afe2d69844604c7167c23b5023a5fa190db8ec918cbdd204bdcdc9703ffebe",
+      "destination_contract": "sha256:da33d7b9ff126ecd204fc0ce6beecadd0cdc7416cf3df2625befd991b7f2da81",
+      "fixtures": {
+        "catalog.json": "sha256:f3269da55084bab3c5e9ef053eccee8d8ce2b465a22f541d5cd8e3ccfe914486",
+        "request.malformed.json": "sha256:5137acae4894269f433ebcd5fb2da1cfa9d2d353a0141a7a5e074e8b524fc452",
+        "request.null.json": "sha256:44deb3f5fcb21690346c5113967a32b5fd736a5763fdade82fad93c5edae27bf",
+        "request.positive.json": "sha256:0b7c0389460244c5c1ce68783bc20f18d42d5e2fdd2d65213ef4a6ef6db75abe",
+        "request.present.json": "sha256:26f918b72d7e617b73faa0d99e7ed74181c89a8d9c2c3dadae3a2af9b5aa729d",
+        "response.null.json": "sha256:44deb3f5fcb21690346c5113967a32b5fd736a5763fdade82fad93c5edae27bf",
+        "response.positive.json": "sha256:0b7c0389460244c5c1ce68783bc20f18d42d5e2fdd2d65213ef4a6ef6db75abe"
+      },
+      "review_record": "sha256:39518384123be6104e26dbaf1acb94f46c8242e72deda58e754ee37adf37e3fb"
+    },
+    "identity_boundary": "Local reviewer names and content digests are an auditable workflow, not remote identity authentication or tamper-proof signatures."
+  },
+  "history": [
+    {
+      "at": "2026-09-30T00:00:00Z",
+      "action": "reviewed",
+      "actor": "local-reviewer",
+      "digest": "sha256:39518384123be6104e26dbaf1acb94f46c8242e72deda58e754ee37adf37e3fb",
+      "note": "review record bound",
+      "prev": null
+    },
+    {
+      "at": "2026-09-30T00:00:00Z",
+      "action": "approved",
+      "actor": "local-reviewer",
+      "digest": "sha256:46e3c2ee2951825fdeb42471cf082cc8bd84aa307d465843667e01e48e708a7e",
+      "prev": "sha256:c449638c913d286a286ec42ff5a919adb8fc4b24e03f24267f77b6cabb6f12d8"
+    }
+  ]
+}

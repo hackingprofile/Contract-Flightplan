@@ -1,0 +1,57 @@
+{
+  "schema_version": "1",
+  "kind": "proposal",
+  "id": "invalid-wrong-parameter-type",
+  "source_contract": {
+    "path": "packs/unit-mass-grams/base.openapi.yaml"
+  },
+  "destination_contract": {
+    "path": "packs/unit-mass-grams/next.openapi.yaml"
+  },
+  "rules": [
+    {
+      "id": "unit-mass-grams-request",
+      "operation": "unit_conversion",
+      "source": {
+        "operation": {
+          "method": "POST",
+          "path": "/mass",
+          "operation_id": "createMass"
+        },
+        "location": "request",
+        "field": "mass"
+      },
+      "destination": {
+        "operation": {
+          "method": "POST",
+          "path": "/mass",
+          "operation_id": "createMass"
+        },
+        "location": "request",
+        "field": "mass"
+      },
+      "parameters": {
+        "field": "mass",
+        "from_unit": "kg",
+        "to_unit": "g",
+        "factor_num": "1000",
+        "factor_den": 1,
+        "rounding": "exact"
+      },
+      "preconditions": [
+        "typed against source schema"
+      ],
+      "postconditions": [
+        "typed against destination schema"
+      ],
+      "evidence": "request unit_conversion",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": [
+        "request.positive.json",
+        "request.overflow.json",
+        "request.missing.json"
+      ]
+    }
+  ]
+}

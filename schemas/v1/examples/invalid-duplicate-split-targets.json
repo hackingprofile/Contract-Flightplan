@@ -1,0 +1,58 @@
+{
+  "schema_version": "1",
+  "kind": "proposal",
+  "id": "invalid-duplicate-split-targets",
+  "source_contract": {
+    "path": "packs/split-full-name/base.openapi.yaml"
+  },
+  "destination_contract": {
+    "path": "packs/split-full-name/next.openapi.yaml"
+  },
+  "rules": [
+    {
+      "id": "split-full-name-request",
+      "operation": "split",
+      "source": {
+        "operation": {
+          "method": "POST",
+          "path": "/names",
+          "operation_id": "createName"
+        },
+        "location": "request",
+        "field": "full_name"
+      },
+      "destination": {
+        "operation": {
+          "method": "POST",
+          "path": "/names",
+          "operation_id": "createName"
+        },
+        "location": "request",
+        "field": "first_name"
+      },
+      "parameters": {
+        "field": "full_name",
+        "into": [
+          "first_name",
+          "first_name"
+        ],
+        "separator": " "
+      },
+      "preconditions": [
+        "typed against source schema"
+      ],
+      "postconditions": [
+        "typed against destination schema"
+      ],
+      "evidence": "request split",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": [
+        "request.positive.json",
+        "request.malformed.json",
+        "request.missing.json",
+        "request.collision.json"
+      ]
+    }
+  ]
+}

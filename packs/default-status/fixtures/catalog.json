@@ -1,0 +1,11 @@
+{
+  "schema_version": "1",
+  "items": [
+    {"id": "request-positive", "path": "request.positive.json", "rule_ids": ["default-status-request"], "expect": "success", "description": "Request fixture (name) that maps cleanly and validates against the destination.", "version": "1"},
+    {"id": "request-present", "path": "request.present.json", "rule_ids": ["default-status-request"], "expect": "success", "description": "Request fixture (name, status) that maps cleanly and validates against the destination.", "version": "1"},
+    {"id": "request-null", "path": "request.null.json", "rule_ids": ["default-status-request"], "expect": "explicit_null", "description": "Request fixture (name, status) that carries an explicit null that is not replaced.", "version": "1"},
+    {"id": "request-malformed", "path": "request.malformed.json", "rule_ids": ["default-status-request"], "expect": "malformed", "description": "Request fixture (name, status) that carries a value of the wrong type or shape.", "version": "1"},
+    {"id": "response-positive", "path": "response.positive.json", "rule_ids": ["default-status-response"], "expect": "success", "description": "Response fixture (name) that maps cleanly and validates against the destination.", "version": "1"},
+    {"id": "response-null", "path": "response.null.json", "rule_ids": ["default-status-response"], "expect": "explicit_null", "description": "Response fixture (name, status) that carries an explicit null that is not replaced.", "version": "1"}
+  ]
+}

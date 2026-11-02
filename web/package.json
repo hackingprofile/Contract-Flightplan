@@ -1,0 +1,13 @@
+{
+  "name": "contract-flightplan-web",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Offline static review helper for Contract Flightplan JSON reports. No network calls.",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "test": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  }
+}

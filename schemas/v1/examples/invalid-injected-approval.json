@@ -1,0 +1,9 @@
+{
+  "schema_version": "1",
+  "kind": "proposal",
+  "id": "bad",
+  "approval": { "reviewer": "injected" },
+  "source_contract": { "path": "base.yaml" },
+  "destination_contract": { "path": "next.yaml" },
+  "rules": []
+}

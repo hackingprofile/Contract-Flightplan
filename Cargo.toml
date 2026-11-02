@@ -1,0 +1,31 @@
+[package]
+name = "contract-flightplan"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+description = "Local API-contract migration planner: compare, review, approve, and verify bounded OpenAPI mappings without a model."
+readme = "README.md"
+publish = false
+
+[[bin]]
+name = "cfp"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4.5", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+# JSON Schema `pattern` keywords (Rust regex syntax; constructs it lacks are reported as unsupported).
+regex = "1"
+sha2 = "0.10"
+thiserror = "2"
+yaml_serde = "0.10"
+# The YAML tokenizer yaml_serde already uses, called directly for a nesting
+# pre-pass that stops deep flow collections before the full parse.
+libyaml-rs = "0.3"
+
+[dev-dependencies]
+# Used only by tests to validate packs, examples, and CLI outputs against schemas/v1.
+jsonschema = { version = "0.57", default-features = false }
+# Property tests for the parser and the mapping interpreter.
+proptest = { version = "1", default-features = false, features = ["std"] }

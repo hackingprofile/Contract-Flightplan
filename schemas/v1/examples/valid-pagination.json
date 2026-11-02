@@ -1,0 +1,55 @@
+{
+  "schema_version": "1",
+  "kind": "proposal",
+  "id": "example-pagination",
+  "source_contract": {
+    "path": "packs/page-envelope/base.openapi.yaml"
+  },
+  "destination_contract": {
+    "path": "packs/page-envelope/next.openapi.yaml"
+  },
+  "rules": [
+    {
+      "id": "page-envelope-request",
+      "operation": "pagination",
+      "source": {
+        "operation": {
+          "method": "POST",
+          "path": "/pages",
+          "operation_id": "listPages"
+        },
+        "location": "request",
+        "field": "results"
+      },
+      "destination": {
+        "operation": {
+          "method": "POST",
+          "path": "/pages",
+          "operation_id": "listPages"
+        },
+        "location": "request",
+        "field": "data"
+      },
+      "parameters": {
+        "from_items": "results",
+        "from_token": "next",
+        "to_data": "data",
+        "to_cursor": "cursor"
+      },
+      "preconditions": [
+        "typed against source schema"
+      ],
+      "postconditions": [
+        "typed against destination schema"
+      ],
+      "evidence": "request pagination",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": [
+        "request.positive.json",
+        "request.missing.json",
+        "request.collision.json"
+      ]
+    }
+  ]
+}

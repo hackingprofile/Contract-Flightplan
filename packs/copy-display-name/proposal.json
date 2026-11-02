@@ -1,0 +1,53 @@
+{
+  "schema_version": "1",
+  "kind": "proposal",
+  "id": "copy-display-name",
+  "source_contract": { "path": "base.openapi.yaml" },
+  "destination_contract": { "path": "next.openapi.yaml" },
+  "rules": [
+    {
+      "id": "copy-display-request",
+      "operation": "copy",
+      "source": {
+        "operation": { "method": "POST", "path": "/profiles", "operation_id": "createProfile" },
+        "location": "request",
+        "field": "name"
+      },
+      "destination": {
+        "operation": { "method": "POST", "path": "/profiles", "operation_id": "createProfile" },
+        "location": "request",
+        "field": "display_name"
+      },
+      "parameters": { "from": "name", "to": "display_name" },
+      "preconditions": ["name is present", "display_name is absent"],
+      "postconditions": ["name remains", "display_name equals name"],
+      "evidence": "POST /profiles request copies name onto display_name",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": ["request.positive.json", "request.collision.json", "request.missing.json"]
+    },
+    {
+      "id": "copy-display-response",
+      "operation": "copy",
+      "source": {
+        "operation": { "method": "POST", "path": "/profiles", "operation_id": "createProfile" },
+        "location": "response",
+        "response_status": "200",
+        "field": "name"
+      },
+      "destination": {
+        "operation": { "method": "POST", "path": "/profiles", "operation_id": "createProfile" },
+        "location": "response",
+        "response_status": "200",
+        "field": "display_name"
+      },
+      "parameters": { "from": "name", "to": "display_name" },
+      "preconditions": ["name is present", "display_name is absent"],
+      "postconditions": ["name remains", "display_name equals name"],
+      "evidence": "POST /profiles 200 response copies name onto display_name",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": ["response.positive.json", "response.collision.json"]
+    }
+  ]
+}

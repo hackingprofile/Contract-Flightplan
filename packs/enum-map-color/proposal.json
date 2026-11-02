@@ -1,0 +1,61 @@
+{
+  "schema_version": "1",
+  "kind": "proposal",
+  "id": "enum-map-color",
+  "source_contract": { "path": "base.openapi.yaml" },
+  "destination_contract": { "path": "next.openapi.yaml" },
+  "rules": [
+    {
+      "id": "enum-map-color-request",
+      "operation": "enum_map",
+      "source": {
+        "operation": { "method": "POST", "path": "/swatches", "operation_id": "createSwatch" },
+        "location": "request",
+        "field": "color"
+      },
+      "destination": {
+        "operation": { "method": "POST", "path": "/swatches", "operation_id": "createSwatch" },
+        "location": "request",
+        "field": "color"
+      },
+      "parameters": {
+        "field": "color",
+        "map": { "RED": "red", "BLUE": "blue", "GREEN": "green" },
+        "unmapped": "fail"
+      },
+      "preconditions": ["color is a mapped source enum value"],
+      "postconditions": ["color is a destination enum value"],
+      "evidence": "uppercase source colors map onto lowercase destination colors",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": ["request.positive.json", "request.unknown.json", "request.missing.json", "request.null.json"]
+    },
+    {
+      "id": "enum-map-color-response",
+      "operation": "enum_map",
+      "source": {
+        "operation": { "method": "POST", "path": "/swatches", "operation_id": "createSwatch" },
+        "location": "response",
+        "response_status": "200",
+        "field": "color"
+      },
+      "destination": {
+        "operation": { "method": "POST", "path": "/swatches", "operation_id": "createSwatch" },
+        "location": "response",
+        "response_status": "200",
+        "field": "color"
+      },
+      "parameters": {
+        "field": "color",
+        "map": { "RED": "red", "BLUE": "blue", "GREEN": "green" },
+        "unmapped": "fail"
+      },
+      "preconditions": ["color is a mapped source enum value"],
+      "postconditions": ["color is a destination enum value"],
+      "evidence": "POST /swatches 200 response uses the same enum map",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": ["response.positive.json", "response.unknown.json"]
+    }
+  ]
+}

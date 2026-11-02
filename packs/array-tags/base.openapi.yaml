@@ -1,0 +1,34 @@
+openapi: 3.0.3
+info:
+  title: Tags API
+  version: "1.0.0"
+paths:
+  /tags:
+    post:
+      operationId: createTags
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Item"
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+components:
+  schemas:
+    Item:
+      type: object
+      additionalProperties: true
+      required: [tags]
+      properties:
+        tags:
+          type: array
+          items:
+            type: string
+            nullable: true
+            enum: [RED, BLUE, GREEN]

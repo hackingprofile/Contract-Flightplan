@@ -1,0 +1,12 @@
+{
+  "schema_version": "1",
+  "items": [
+    {"id": "request-positive", "path": "request.positive.json", "rule_ids": ["safe-cast-count-request"], "expect": "success", "description": "Request fixture (count) that maps cleanly and validates against the destination.", "version": "1"},
+    {"id": "request-malformed", "path": "request.malformed.json", "rule_ids": ["safe-cast-count-request"], "expect": "malformed", "description": "Request fixture (count) that carries a value of the wrong type or shape.", "version": "1"},
+    {"id": "request-overflow", "path": "request.overflow.json", "rule_ids": ["safe-cast-count-request"], "expect": "malformed", "description": "Request fixture (count) that carries a value of the wrong type or shape.", "version": "1"},
+    {"id": "request-missing", "path": "request.missing.json", "rule_ids": ["safe-cast-count-request"], "expect": "missing", "description": "Request fixture (no fields) that lacks the field the rule reads.", "version": "1"},
+    {"id": "response-positive", "path": "response.positive.json", "rule_ids": ["safe-cast-count-response"], "expect": "success", "description": "Response fixture (count) that maps cleanly and validates against the destination.", "version": "1"},
+    {"id": "response-malformed", "path": "response.malformed.json", "rule_ids": ["safe-cast-count-response"], "expect": "malformed", "description": "Response fixture (count) that carries a value of the wrong type or shape.", "version": "1"},
+    {"id": "request-null", "path": "request.null.json", "rule_ids": ["safe-cast-count-request"], "expect": "schema_validation", "description": "Request whose count is null; the source schema does not allow null, so it is refused before the cast.", "version": "1"}
+  ]
+}

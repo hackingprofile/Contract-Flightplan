@@ -1,0 +1,10 @@
+{
+  "schema_version": "1",
+  "items": [
+    {"id": "request-positive", "path": "request.positive.json", "rule_ids": ["require-email-request"], "expect": "success", "description": "Request fixture (name, email) that maps cleanly and validates against the destination.", "version": "1"},
+    {"id": "request-missing", "path": "request.missing.json", "rule_ids": ["require-email-request"], "expect": "missing", "description": "Request fixture (name) that lacks the field the rule reads.", "version": "1"},
+    {"id": "request-null", "path": "request.null.json", "rule_ids": ["require-email-request"], "expect": "explicit_null", "description": "Request fixture (name, email) that carries an explicit null that is not replaced.", "version": "1"},
+    {"id": "response-positive", "path": "response.positive.json", "rule_ids": ["require-email-response"], "expect": "success", "description": "Response fixture (name, email) that maps cleanly and validates against the destination.", "version": "1"},
+    {"id": "response-missing", "path": "response.missing.json", "rule_ids": ["require-email-response"], "expect": "missing", "description": "Response fixture (name) that lacks the field the rule reads.", "version": "1"}
+  ]
+}

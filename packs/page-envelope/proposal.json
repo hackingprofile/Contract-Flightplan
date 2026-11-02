@@ -1,0 +1,53 @@
+{
+  "schema_version": "1",
+  "kind": "proposal",
+  "id": "page-envelope",
+  "source_contract": { "path": "base.openapi.yaml" },
+  "destination_contract": { "path": "next.openapi.yaml" },
+  "rules": [
+    {
+      "id": "page-envelope-request",
+      "operation": "pagination",
+      "source": {
+        "operation": { "method": "POST", "path": "/pages", "operation_id": "listPages" },
+        "location": "request",
+        "field": "results"
+      },
+      "destination": {
+        "operation": { "method": "POST", "path": "/pages", "operation_id": "listPages" },
+        "location": "request",
+        "field": "data"
+      },
+      "parameters": {"from_items":"results","from_token":"next","to_data":"data","to_cursor":"cursor"},
+      "preconditions": ["typed against source schema"],
+      "postconditions": ["typed against destination schema"],
+      "evidence": "request pagination",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": ["request.positive.json", "request.missing.json", "request.collision.json"]
+    },
+    {
+      "id": "page-envelope-response",
+      "operation": "pagination",
+      "source": {
+        "operation": { "method": "POST", "path": "/pages", "operation_id": "listPages" },
+        "location": "response",
+        "response_status": "200",
+        "field": "results"
+      },
+      "destination": {
+        "operation": { "method": "POST", "path": "/pages", "operation_id": "listPages" },
+        "location": "response",
+        "response_status": "200",
+        "field": "data"
+      },
+      "parameters": {"from_items":"results","from_token":"next","to_data":"data","to_cursor":"cursor"},
+      "preconditions": ["typed against source schema"],
+      "postconditions": ["typed against destination schema"],
+      "evidence": "response pagination",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": ["response.positive.json", "response.missing.json"]
+    }
+  ]
+}

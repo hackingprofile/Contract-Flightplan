@@ -1,0 +1,35 @@
+openapi: 3.0.3
+info:
+  title: Swatches API
+  version: "1.0.0"
+paths:
+  /swatches:
+    post:
+      operationId: createSwatch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Swatch"
+      responses:
+        "200":
+          description: created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Swatch"
+components:
+  schemas:
+    Swatch:
+      type: object
+      additionalProperties: false
+      required: [color]
+      properties:
+        color:
+          type: string
+          nullable: true
+          enum: [RED, BLUE, GREEN]
+        label:
+          type: string
+          nullable: true

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contract-flightplan.local/schemas/v1/report.schema.json",
+  "title": "Contract Flightplan report",
+  "type": "object",
+  "required": ["schema_version", "kind", "approval_state", "diff"],
+  "properties": {
+    "schema_version": { "const": "1" },
+    "kind": { "const": "report" },
+    "approval_state": { "type": "string" },
+    "diff": { "type": "object" },
+    "review": { "type": "object" },
+    "migration": { "type": "object" },
+    "verify": { "type": "object" }
+  }
+}

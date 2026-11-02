@@ -1,0 +1,9 @@
+{
+  "schema_version": "1",
+  "items": [
+    {"id": "request-positive", "path": "request.positive.json", "rule_ids": ["drop-legacy-flag-request"], "expect": "success", "description": "Request fixture (id, name, legacy) that maps cleanly and validates against the destination.", "version": "1"},
+    {"id": "request-missing", "path": "request.missing.json", "rule_ids": ["drop-legacy-flag-request"], "expect": "missing", "description": "Request fixture (id, name) that lacks the field the rule reads.", "version": "1"},
+    {"id": "response-positive", "path": "response.positive.json", "rule_ids": ["drop-legacy-flag-response"], "expect": "success", "description": "Response fixture (id, name, legacy) that maps cleanly and validates against the destination.", "version": "1"},
+    {"id": "response-missing", "path": "response.missing.json", "rule_ids": ["drop-legacy-flag-response"], "expect": "missing", "description": "Response fixture (id, name) that lacks the field the rule reads.", "version": "1"}
+  ]
+}

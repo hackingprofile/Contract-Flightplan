@@ -1,0 +1,12 @@
+{
+  "schema_version": "1",
+  "items": [
+    {"id": "request-positive", "path": "request.positive.json", "rule_ids": ["merge-display-request"], "expect": "success", "description": "Request fixture (first_name, last_name) that maps cleanly and validates against the destination.", "version": "1"},
+    {"id": "request-missing", "path": "request.missing.json", "rule_ids": ["merge-display-request"], "expect": "missing", "description": "Request fixture (first_name) that lacks the field the rule reads.", "version": "1"},
+    {"id": "request-null", "path": "request.null.json", "rule_ids": ["merge-display-request"], "expect": "explicit_null", "description": "Request fixture (first_name, last_name) that carries an explicit null that is not replaced.", "version": "1"},
+    {"id": "request-collision", "path": "request.collision.json", "rule_ids": ["merge-display-request"], "expect": "collision", "description": "Request fixture (first_name, last_name, display_name) that already carries the field the rule would write.", "version": "1"},
+    {"id": "response-positive", "path": "response.positive.json", "rule_ids": ["merge-display-response"], "expect": "success", "description": "Response fixture (first_name, last_name) that maps cleanly and validates against the destination.", "version": "1"},
+    {"id": "response-missing", "path": "response.missing.json", "rule_ids": ["merge-display-response"], "expect": "missing", "description": "Response fixture (first_name) that lacks the field the rule reads.", "version": "1"},
+    {"id": "request-malformed", "path": "request.malformed.json", "rule_ids": ["merge-display-request"], "expect": "malformed", "description": "Request whose last_name is a number instead of a string; the merge never runs.", "version": "1"}
+  ]
+}

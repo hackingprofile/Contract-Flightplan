@@ -1,0 +1,55 @@
+{
+  "schema_version": "1",
+  "kind": "proposal",
+  "id": "example-safe-cast",
+  "source_contract": {
+    "path": "packs/safe-cast-count/base.openapi.yaml"
+  },
+  "destination_contract": {
+    "path": "packs/safe-cast-count/next.openapi.yaml"
+  },
+  "rules": [
+    {
+      "id": "safe-cast-count-request",
+      "operation": "safe_cast",
+      "source": {
+        "operation": {
+          "method": "POST",
+          "path": "/counts",
+          "operation_id": "createCount"
+        },
+        "location": "request",
+        "field": "count"
+      },
+      "destination": {
+        "operation": {
+          "method": "POST",
+          "path": "/counts",
+          "operation_id": "createCount"
+        },
+        "location": "request",
+        "field": "count"
+      },
+      "parameters": {
+        "field": "count",
+        "from": "string",
+        "to": "integer"
+      },
+      "preconditions": [
+        "typed against source schema"
+      ],
+      "postconditions": [
+        "typed against destination schema"
+      ],
+      "evidence": "request safe_cast",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": [
+        "request.positive.json",
+        "request.malformed.json",
+        "request.overflow.json",
+        "request.missing.json"
+      ]
+    }
+  ]
+}

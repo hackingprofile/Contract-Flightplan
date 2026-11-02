@@ -1,0 +1,442 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contract-flightplan.local/schemas/v1/diff.schema.json",
+  "title": "Contract Flightplan diff",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "kind",
+    "source",
+    "destination",
+    "operations"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1"
+    },
+    "kind": {
+      "const": "diff"
+    },
+    "source": {
+      "$ref": "#/$defs/contractRef"
+    },
+    "destination": {
+      "$ref": "#/$defs/contractRef"
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/operationDiff"
+      }
+    },
+    "added_operations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/opIdentity"
+      }
+    },
+    "removed_operations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/opIdentity"
+      }
+    },
+    "moved_operations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/movedOperation"
+      }
+    },
+    "affected_schemas": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/affectedSchema"
+      }
+    },
+    "unsupported": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/note"
+      }
+    },
+    "unknown": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/note"
+      }
+    },
+    "imported_evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/importedEvidence"
+      }
+    }
+  },
+  "$defs": {
+    "contractRef": {
+      "type": "object",
+      "required": [
+        "path",
+        "digest",
+        "openapi",
+        "dialect",
+        "title",
+        "line_numbers"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "digest": {
+          "type": "string"
+        },
+        "openapi": {
+          "type": "string"
+        },
+        "dialect": {
+          "enum": [
+            "openapi30",
+            "openapi31"
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "line_numbers": {
+          "description": "json_key_path when changes carry line numbers in this contract; line_unavailable for YAML.",
+          "enum": [
+            "json_key_path",
+            "line_unavailable"
+          ]
+        }
+      }
+    },
+    "opIdentity": {
+      "type": "object",
+      "required": [
+        "method",
+        "path"
+      ],
+      "properties": {
+        "method": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "operation_id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "note": {
+      "type": "object",
+      "required": [
+        "construct",
+        "location",
+        "message"
+      ],
+      "properties": {
+        "construct": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "operationDiff": {
+      "type": "object",
+      "required": [
+        "identity",
+        "destination_identity",
+        "request",
+        "responses",
+        "notes"
+      ],
+      "properties": {
+        "identity": {
+          "$ref": "#/$defs/opIdentity"
+        },
+        "destination_identity": {
+          "$ref": "#/$defs/opIdentity"
+        },
+        "request": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/bodyDiff"
+            }
+          ]
+        },
+        "responses": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/bodyDiff"
+          }
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "parameter_changes": {
+          "description": "Added and removed path/query/header/cookie parameters and changes to required. Parameters are compared, not mapped. Omitted when there are none.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/parameterChange"
+          }
+        },
+        "compatibility": {
+          "description": "The worst class over the request, every response and every parameter change.",
+          "$ref": "#/$defs/compatibility"
+        }
+      },
+      "additionalProperties": false
+    },
+    "parameterChange": {
+      "type": "object",
+      "required": [
+        "name",
+        "in",
+        "kind",
+        "compatibility",
+        "reason"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "in": {
+          "enum": [
+            "path",
+            "query",
+            "header",
+            "cookie"
+          ]
+        },
+        "kind": {
+          "enum": [
+            "added",
+            "removed",
+            "required_added",
+            "required_removed"
+          ]
+        },
+        "compatibility": {
+          "$ref": "#/$defs/compatibility"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "compatibility": {
+      "description": "unchanged < non_breaking < unknown < breaking. A body takes the worst class of its changes; an unsupported construct makes it at least unknown.",
+      "enum": [
+        "unchanged",
+        "non_breaking",
+        "unknown",
+        "breaking"
+      ]
+    },
+    "bodyDiff": {
+      "type": "object",
+      "required": [
+        "location",
+        "compatibility",
+        "changes",
+        "added_properties",
+        "removed_properties",
+        "changed_properties",
+        "required_added",
+        "required_removed"
+      ],
+      "properties": {
+        "location": {
+          "type": "string"
+        },
+        "compatibility": {
+          "$ref": "#/$defs/compatibility"
+        },
+        "changes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/change"
+          }
+        },
+        "added_properties": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "removed_properties": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "changed_properties": {
+          "type": "array"
+        },
+        "required_added": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "required_removed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "One request or response body. Notes about unsupported constructs are not repeated here; each is emitted once in the document's unsupported/unknown lists, whose location names the body."
+    },
+    "change": {
+      "type": "object",
+      "required": [
+        "pointer",
+        "field",
+        "kind",
+        "compatibility",
+        "reason",
+        "source_line",
+        "destination_line"
+      ],
+      "properties": {
+        "pointer": {
+          "description": "RFC 6901 pointer to the schema in the source contract, following properties/<name> and items through local $refs.",
+          "type": "string",
+          "pattern": "^/"
+        },
+        "field": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "property_added",
+            "property_removed",
+            "required_added",
+            "required_removed",
+            "type_changed",
+            "enum_changed",
+            "additional_properties_changed",
+            "keyword_changed",
+            "annotation_changed",
+            "unsupported_changed"
+          ]
+        },
+        "compatibility": {
+          "$ref": "#/$defs/compatibility"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "source": {},
+        "destination": {},
+        "source_line": {
+          "description": "1-based line in that contract, or null for YAML or when the position does not exist on that side.",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "destination_line": {
+          "description": "1-based line in that contract, or null for YAML or when the position does not exist on that side.",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "movedOperation": {
+      "type": "object",
+      "required": [
+        "from",
+        "to"
+      ],
+      "properties": {
+        "from": {
+          "$ref": "#/$defs/opIdentity"
+        },
+        "to": {
+          "$ref": "#/$defs/opIdentity"
+        }
+      },
+      "additionalProperties": false
+    },
+    "affectedSchema": {
+      "type": "object",
+      "required": [
+        "component_pointer",
+        "operations"
+      ],
+      "properties": {
+        "component_pointer": {
+          "type": "string",
+          "pattern": "^/components/schemas/"
+        },
+        "operations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/opIdentity"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "importedEvidence": {
+      "type": "object",
+      "required": [
+        "source",
+        "identity",
+        "summary",
+        "compatibility"
+      ],
+      "properties": {
+        "source": {
+          "type": "string"
+        },
+        "identity": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "level": {
+          "enum": [
+            1,
+            2,
+            3
+          ]
+        },
+        "operation": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "compatibility": {
+          "$ref": "#/$defs/compatibility"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

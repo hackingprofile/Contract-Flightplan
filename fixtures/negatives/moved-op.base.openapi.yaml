@@ -1,0 +1,19 @@
+openapi: 3.0.3
+info:
+  title: Moved operation
+  version: '1'
+paths:
+  /users:
+    post:
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '200':
+          description: ok

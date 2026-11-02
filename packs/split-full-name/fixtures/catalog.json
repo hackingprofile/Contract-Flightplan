@@ -1,0 +1,12 @@
+{
+  "schema_version": "1",
+  "items": [
+    {"id": "request-positive", "path": "request.positive.json", "rule_ids": ["split-full-name-request"], "expect": "success", "description": "Request fixture (full_name) that maps cleanly and validates against the destination.", "version": "1"},
+    {"id": "request-malformed", "path": "request.malformed.json", "rule_ids": ["split-full-name-request"], "expect": "malformed", "description": "Request fixture (full_name) that carries a value of the wrong type or shape.", "version": "1"},
+    {"id": "request-missing", "path": "request.missing.json", "rule_ids": ["split-full-name-request"], "expect": "missing", "description": "Request fixture (no fields) that lacks the field the rule reads.", "version": "1"},
+    {"id": "request-collision", "path": "request.collision.json", "rule_ids": ["split-full-name-request"], "expect": "collision", "description": "Request fixture (full_name, first_name) that already carries the field the rule would write.", "version": "1"},
+    {"id": "response-positive", "path": "response.positive.json", "rule_ids": ["split-full-name-response"], "expect": "success", "description": "Response fixture (full_name) that maps cleanly and validates against the destination.", "version": "1"},
+    {"id": "response-malformed", "path": "response.malformed.json", "rule_ids": ["split-full-name-response"], "expect": "malformed", "description": "Response fixture (full_name) that carries a value of the wrong type or shape.", "version": "1"},
+    {"id": "request-null", "path": "request.null.json", "rule_ids": ["split-full-name-request"], "expect": "schema_validation", "description": "Request whose full_name is null; the source schema does not allow null, so nothing is split.", "version": "1"}
+  ]
+}

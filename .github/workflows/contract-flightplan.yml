@@ -1,0 +1,41 @@
+# Offline contract review. Runs the checked-in action against a shipped pack on
+# pull requests, or against caller-supplied paths on manual dispatch. No model
+# provider is called and nothing is published.
+name: contract-flightplan
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      source:
+        description: Source OpenAPI file (relative to the repository root)
+        required: false
+        default: packs/rename-user-id/base.openapi.yaml
+      destination:
+        description: Destination OpenAPI file (relative to the repository root)
+        required: false
+        default: packs/rename-user-id/next.openapi.yaml
+permissions:
+  contents: read
+jobs:
+  review:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@4305c38b25d97ef35a8ad1f985ccf2d2242004f2 # 2025-04-29
+        with:
+          toolchain: 1.98.1
+      - uses: ./
+        id: flightplan
+        with:
+          source: ${{ inputs.source || 'packs/rename-user-id/base.openapi.yaml' }}
+          destination: ${{ inputs.destination || 'packs/rename-user-id/next.openapi.yaml' }}
+          out-dir: contract-flightplan-out
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: contract-flightplan-review
+          path: ${{ steps.flightplan.outputs.out-dir }}
+          if-no-files-found: error
+          retention-days: 14

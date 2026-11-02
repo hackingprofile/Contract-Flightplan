@@ -1,0 +1,9 @@
+Contract Flightplan
+Copyright 2026 Contract Flightplan contributors
+
+This product is licensed under the Apache License, Version 2.0.
+See LICENSE for the full license text.
+
+Third-party crates used at build time are listed in docs/dependencies.md
+together with the tested lockfile versions. Runtime compare, review,
+approve, verify and report do not call network services.

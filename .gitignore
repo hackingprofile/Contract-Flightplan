@@ -1,0 +1,6 @@
+/target
+/dist
+/proof
+/out
+web/node_modules
+*.pdb

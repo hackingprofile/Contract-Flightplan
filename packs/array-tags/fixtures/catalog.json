@@ -1,0 +1,15 @@
+{
+  "schema_version": "1",
+  "items": [
+    {"id": "request-positive", "path": "request.positive.json", "rule_ids": ["array-filter-request", "array-map-request"], "expect": "success", "description": "Request fixture (tags) that maps cleanly and validates against the destination.", "version": "1"},
+    {"id": "request-null-item", "path": "request.null-item.json", "rule_ids": ["array-filter-request", "array-map-request"], "expect": "success", "description": "Request fixture (tags) that maps cleanly and validates against the destination.", "version": "1"},
+    {"id": "request-unknown", "path": "request.unknown.json", "rule_ids": ["array-filter-request", "array-map-request"], "expect": "unknown_enum", "description": "Request fixture (tags) that carries an enum value the mapping does not cover.", "version": "1"},
+    {"id": "request-missing", "path": "request.missing.json", "rule_ids": ["array-filter-request", "array-map-request"], "expect": "missing", "description": "Request fixture (no fields) that lacks the field the rule reads.", "version": "1"},
+    {"id": "request-malformed", "path": "request.malformed.json", "rule_ids": ["array-filter-request", "array-map-request"], "expect": "malformed", "description": "Request fixture (tags) that carries a value of the wrong type or shape.", "version": "1"},
+    {"id": "response-positive", "path": "response.positive.json", "rule_ids": ["array-filter-response", "array-map-response"], "expect": "success", "description": "Response fixture (tags) that maps cleanly and validates against the destination.", "version": "1"},
+    {"id": "response-unknown", "path": "response.unknown.json", "rule_ids": ["array-filter-response", "array-map-response"], "expect": "unknown_enum", "description": "Response fixture (tags) that carries an enum value the mapping does not cover.", "version": "1"},
+    {"id": "request-null", "path": "request.null.json", "rule_ids": ["array-filter-request", "array-map-request"], "expect": "schema_validation", "description": "Request whose tags array is null; the source schema does not allow null.", "version": "1"},
+    {"id": "request-bound", "path": "request.bound.json", "rule_ids": ["array-filter-request", "array-map-request"], "expect": "bound", "description": "Request with 257 tags, one over the 256-item array bound.", "version": "1"},
+    {"id": "response-null-item", "path": "response.null-item.json", "rule_ids": ["array-filter-response", "array-map-response"], "expect": "success", "description": "Response whose tags contain a null item; the filter drops it before the map.", "version": "1"}
+  ]
+}

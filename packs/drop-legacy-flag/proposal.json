@@ -1,0 +1,53 @@
+{
+  "schema_version": "1",
+  "kind": "proposal",
+  "id": "drop-legacy-flag",
+  "source_contract": { "path": "base.openapi.yaml" },
+  "destination_contract": { "path": "next.openapi.yaml" },
+  "rules": [
+    {
+      "id": "drop-legacy-flag-request",
+      "operation": "drop",
+      "source": {
+        "operation": { "method": "POST", "path": "/flags", "operation_id": "createFlag" },
+        "location": "request",
+        "field": "legacy"
+      },
+      "destination": {
+        "operation": { "method": "POST", "path": "/flags", "operation_id": "createFlag" },
+        "location": "request",
+        "field": "legacy"
+      },
+      "parameters": {"field":"legacy"},
+      "preconditions": ["typed against source schema"],
+      "postconditions": ["typed against destination schema"],
+      "evidence": "request drop",
+      "lossiness": "dropped",
+      "reversibility": "irreversible",
+      "fixture_refs": ["request.positive.json", "request.missing.json"]
+    },
+    {
+      "id": "drop-legacy-flag-response",
+      "operation": "drop",
+      "source": {
+        "operation": { "method": "POST", "path": "/flags", "operation_id": "createFlag" },
+        "location": "response",
+        "response_status": "200",
+        "field": "legacy"
+      },
+      "destination": {
+        "operation": { "method": "POST", "path": "/flags", "operation_id": "createFlag" },
+        "location": "response",
+        "response_status": "200",
+        "field": "legacy"
+      },
+      "parameters": {"field":"legacy"},
+      "preconditions": ["typed against source schema"],
+      "postconditions": ["typed against destination schema"],
+      "evidence": "response drop",
+      "lossiness": "dropped",
+      "reversibility": "irreversible",
+      "fixture_refs": ["response.positive.json", "response.missing.json"]
+    }
+  ]
+}

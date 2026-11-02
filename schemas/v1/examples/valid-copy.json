@@ -1,0 +1,55 @@
+{
+  "schema_version": "1",
+  "kind": "proposal",
+  "id": "example-copy",
+  "source_contract": {
+    "path": "packs/copy-display-name/base.openapi.yaml"
+  },
+  "destination_contract": {
+    "path": "packs/copy-display-name/next.openapi.yaml"
+  },
+  "rules": [
+    {
+      "id": "copy-display-request",
+      "operation": "copy",
+      "source": {
+        "operation": {
+          "method": "POST",
+          "path": "/profiles",
+          "operation_id": "createProfile"
+        },
+        "location": "request",
+        "field": "name"
+      },
+      "destination": {
+        "operation": {
+          "method": "POST",
+          "path": "/profiles",
+          "operation_id": "createProfile"
+        },
+        "location": "request",
+        "field": "display_name"
+      },
+      "parameters": {
+        "from": "name",
+        "to": "display_name"
+      },
+      "preconditions": [
+        "name is present",
+        "display_name is absent"
+      ],
+      "postconditions": [
+        "name remains",
+        "display_name equals name"
+      ],
+      "evidence": "POST /profiles request copies name onto display_name",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": [
+        "request.positive.json",
+        "request.collision.json",
+        "request.missing.json"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "schema_version": "1",
+  "kind": "migration",
+  "id": "copy-display-name",
+  "source_contract": {
+    "path": "packs/copy-display-name/base.openapi.yaml",
+    "digest": "sha256:63d28d1611690c6c86ecb70bd2de2bc8a3fc99b4c3e8e0f9814a23fa725ae755"
+  },
+  "destination_contract": {
+    "path": "packs/copy-display-name/next.openapi.yaml",
+    "digest": "sha256:a63cc791f40d637d4cf7cf3c1aeb0e7f0152991c2f5e5344d08f538ccae1f9fa"
+  },
+  "rules": [
+    {
+      "id": "copy-display-request",
+      "operation": "copy",
+      "source": {
+        "operation": {
+          "method": "POST",
+          "path": "/profiles",
+          "operation_id": "createProfile"
+        },
+        "location": "request",
+        "field": "name"
+      },
+      "destination": {
+        "operation": {
+          "method": "POST",
+          "path": "/profiles",
+          "operation_id": "createProfile"
+        },
+        "location": "request",
+        "field": "display_name"
+      },
+      "parameters": {
+        "from": "name",
+        "to": "display_name"
+      },
+      "preconditions": [
+        "name is present",
+        "display_name is absent"
+      ],
+      "postconditions": [
+        "name remains",
+        "display_name equals name"
+      ],
+      "evidence": "POST /profiles request copies name onto display_name",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": [
+        "request.positive.json",
+        "request.collision.json",
+        "request.missing.json"
+      ]
+    },
+    {
+      "id": "copy-display-response",
+      "operation": "copy",
+      "source": {
+        "operation": {
+          "method": "POST",
+          "path": "/profiles",
+          "operation_id": "createProfile"
+        },
+        "location": "response",
+        "response_status": "200",
+        "field": "name"
+      },
+      "destination": {
+        "operation": {
+          "method": "POST",
+          "path": "/profiles",
+          "operation_id": "createProfile"
+        },
+        "location": "response",
+        "response_status": "200",
+        "field": "display_name"
+      },
+      "parameters": {
+        "from": "name",
+        "to": "display_name"
+      },
+      "preconditions": [
+        "name is present",
+        "display_name is absent"
+      ],
+      "postconditions": [
+        "name remains",
+        "display_name equals name"
+      ],
+      "evidence": "POST /profiles 200 response copies name onto display_name",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": [
+        "response.positive.json",
+        "response.collision.json"
+      ]
+    }
+  ],
+  "fixtures": {
+    "catalog.json": "sha256:ee1b8edb925e125c37f3470da809e723b787b68c1688b72dac65c1a21b78e81d",
+    "request.collision.json": "sha256:df8961831b94bb604c4cdd6838feed4c9b779f2e2ce2f94391fdf5883c1fc4c0",
+    "request.missing.json": "sha256:ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+    "request.positive.json": "sha256:aa3eae467c7fefe50dffe17bd20f7952d92ce26bde047db602e9f600a4b6e03d",
+    "response.collision.json": "sha256:df8961831b94bb604c4cdd6838feed4c9b779f2e2ce2f94391fdf5883c1fc4c0",
+    "response.positive.json": "sha256:aa3eae467c7fefe50dffe17bd20f7952d92ce26bde047db602e9f600a4b6e03d"
+  },
+  "lifecycle": "approved",
+  "approval": {
+    "reviewer": "local-reviewer",
+    "approved_at": "2026-09-30T00:00:00Z",
+    "bound_digests": {
+      "proposal": "sha256:f21010ce5ad1f6d93aeaa51aaae71f387c94cc8f463f6641b5bb33cc0e4600ac",
+      "rules": "sha256:a743ac5e532e0743a7844d745217505d2267e4ab781037b6970d632f1f11be7b",
+      "source_contract": "sha256:63d28d1611690c6c86ecb70bd2de2bc8a3fc99b4c3e8e0f9814a23fa725ae755",
+      "destination_contract": "sha256:a63cc791f40d637d4cf7cf3c1aeb0e7f0152991c2f5e5344d08f538ccae1f9fa",
+      "fixtures": {
+        "catalog.json": "sha256:ee1b8edb925e125c37f3470da809e723b787b68c1688b72dac65c1a21b78e81d",
+        "request.collision.json": "sha256:df8961831b94bb604c4cdd6838feed4c9b779f2e2ce2f94391fdf5883c1fc4c0",
+        "request.missing.json": "sha256:ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+        "request.positive.json": "sha256:aa3eae467c7fefe50dffe17bd20f7952d92ce26bde047db602e9f600a4b6e03d",
+        "response.collision.json": "sha256:df8961831b94bb604c4cdd6838feed4c9b779f2e2ce2f94391fdf5883c1fc4c0",
+        "response.positive.json": "sha256:aa3eae467c7fefe50dffe17bd20f7952d92ce26bde047db602e9f600a4b6e03d"
+      },
+      "review_record": "sha256:e83955335a5c76e91a4c008b7890f3838eb37c0770df54f01cc59c1d542adc2e"
+    },
+    "identity_boundary": "Local reviewer names and content digests are an auditable workflow, not remote identity authentication or tamper-proof signatures."
+  },
+  "history": [
+    {
+      "at": "2026-09-30T00:00:00Z",
+      "action": "reviewed",
+      "actor": "local-reviewer",
+      "digest": "sha256:e83955335a5c76e91a4c008b7890f3838eb37c0770df54f01cc59c1d542adc2e",
+      "note": "review record bound",
+      "prev": null
+    },
+    {
+      "at": "2026-09-30T00:00:00Z",
+      "action": "approved",
+      "actor": "local-reviewer",
+      "digest": "sha256:77a3bcf9249a05c2ca83302ec9de5e4ec89e9aeb4b1fdc06a087e908f77275e3",
+      "prev": "sha256:a3c8c6d1c08df8cc76df955873cd5b1ee0c5ef0a79d53d2e1180647fd440fa50"
+    }
+  ]
+}

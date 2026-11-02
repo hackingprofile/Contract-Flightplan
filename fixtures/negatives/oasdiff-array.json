@@ -1,0 +1,9 @@
+[
+  {
+    "id": "request-body-changed",
+    "text": "POST /users request body",
+    "level": 3,
+    "operation": "POST",
+    "path": "/users"
+  }
+]

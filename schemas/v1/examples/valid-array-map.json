@@ -1,0 +1,59 @@
+{
+  "schema_version": "1",
+  "kind": "proposal",
+  "id": "example-array-map",
+  "source_contract": {
+    "path": "packs/array-tags/base.openapi.yaml"
+  },
+  "destination_contract": {
+    "path": "packs/array-tags/next.openapi.yaml"
+  },
+  "rules": [
+    {
+      "id": "array-map-request",
+      "operation": "array_map",
+      "source": {
+        "operation": {
+          "method": "POST",
+          "path": "/tags",
+          "operation_id": "createTags"
+        },
+        "location": "request",
+        "field": "tags"
+      },
+      "destination": {
+        "operation": {
+          "method": "POST",
+          "path": "/tags",
+          "operation_id": "createTags"
+        },
+        "location": "request",
+        "field": "tags"
+      },
+      "parameters": {
+        "field": "tags",
+        "map": {
+          "RED": "red",
+          "BLUE": "blue",
+          "GREEN": "green"
+        },
+        "unmapped": "fail"
+      },
+      "preconditions": [
+        "tags are mapped enums"
+      ],
+      "postconditions": [
+        "destination enums"
+      ],
+      "evidence": "map tag enums",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": [
+        "request.positive.json",
+        "request.unknown.json",
+        "request.missing.json",
+        "request.malformed.json"
+      ]
+    }
+  ]
+}

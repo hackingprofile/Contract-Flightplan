@@ -1,0 +1,59 @@
+{
+  "schema_version": "1",
+  "kind": "proposal",
+  "id": "example-enum-map",
+  "source_contract": {
+    "path": "packs/enum-map-color/base.openapi.yaml"
+  },
+  "destination_contract": {
+    "path": "packs/enum-map-color/next.openapi.yaml"
+  },
+  "rules": [
+    {
+      "id": "enum-map-color-request",
+      "operation": "enum_map",
+      "source": {
+        "operation": {
+          "method": "POST",
+          "path": "/swatches",
+          "operation_id": "createSwatch"
+        },
+        "location": "request",
+        "field": "color"
+      },
+      "destination": {
+        "operation": {
+          "method": "POST",
+          "path": "/swatches",
+          "operation_id": "createSwatch"
+        },
+        "location": "request",
+        "field": "color"
+      },
+      "parameters": {
+        "field": "color",
+        "map": {
+          "RED": "red",
+          "BLUE": "blue",
+          "GREEN": "green"
+        },
+        "unmapped": "fail"
+      },
+      "preconditions": [
+        "color is a mapped source enum value"
+      ],
+      "postconditions": [
+        "color is a destination enum value"
+      ],
+      "evidence": "uppercase source colors map onto lowercase destination colors",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": [
+        "request.positive.json",
+        "request.unknown.json",
+        "request.missing.json",
+        "request.null.json"
+      ]
+    }
+  ]
+}

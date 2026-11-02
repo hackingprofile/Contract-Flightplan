@@ -1,0 +1,53 @@
+{
+  "schema_version": "1",
+  "kind": "proposal",
+  "id": "split-full-name",
+  "source_contract": { "path": "base.openapi.yaml" },
+  "destination_contract": { "path": "next.openapi.yaml" },
+  "rules": [
+    {
+      "id": "split-full-name-request",
+      "operation": "split",
+      "source": {
+        "operation": { "method": "POST", "path": "/names", "operation_id": "createName" },
+        "location": "request",
+        "field": "full_name"
+      },
+      "destination": {
+        "operation": { "method": "POST", "path": "/names", "operation_id": "createName" },
+        "location": "request",
+        "field": "first_name"
+      },
+      "parameters": {"field":"full_name","into":["first_name","last_name"],"separator":" "},
+      "preconditions": ["typed against source schema"],
+      "postconditions": ["typed against destination schema"],
+      "evidence": "request split",
+      "lossiness": "none",
+      "reversibility": "partially_reversible",
+      "fixture_refs": ["request.positive.json", "request.malformed.json", "request.missing.json", "request.collision.json"]
+    },
+    {
+      "id": "split-full-name-response",
+      "operation": "split",
+      "source": {
+        "operation": { "method": "POST", "path": "/names", "operation_id": "createName" },
+        "location": "response",
+        "response_status": "200",
+        "field": "full_name"
+      },
+      "destination": {
+        "operation": { "method": "POST", "path": "/names", "operation_id": "createName" },
+        "location": "response",
+        "response_status": "200",
+        "field": "first_name"
+      },
+      "parameters": {"field":"full_name","into":["first_name","last_name"],"separator":" "},
+      "preconditions": ["typed against source schema"],
+      "postconditions": ["typed against destination schema"],
+      "evidence": "response split",
+      "lossiness": "none",
+      "reversibility": "partially_reversible",
+      "fixture_refs": ["response.positive.json", "response.malformed.json"]
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "schema_version": "1",
+  "kind": "proposal",
+  "id": "example-drop",
+  "source_contract": {
+    "path": "packs/drop-legacy-flag/base.openapi.yaml"
+  },
+  "destination_contract": {
+    "path": "packs/drop-legacy-flag/next.openapi.yaml"
+  },
+  "rules": [
+    {
+      "id": "drop-legacy-flag-request",
+      "operation": "drop",
+      "source": {
+        "operation": {
+          "method": "POST",
+          "path": "/flags",
+          "operation_id": "createFlag"
+        },
+        "location": "request",
+        "field": "legacy"
+      },
+      "destination": {
+        "operation": {
+          "method": "POST",
+          "path": "/flags",
+          "operation_id": "createFlag"
+        },
+        "location": "request",
+        "field": "legacy"
+      },
+      "parameters": {
+        "field": "legacy"
+      },
+      "preconditions": [
+        "typed against source schema"
+      ],
+      "postconditions": [
+        "typed against destination schema"
+      ],
+      "evidence": "request drop",
+      "lossiness": "dropped",
+      "reversibility": "irreversible",
+      "fixture_refs": [
+        "request.positive.json",
+        "request.missing.json"
+      ]
+    }
+  ]
+}

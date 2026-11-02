@@ -1,0 +1,30 @@
+{
+  "schema_version": "1",
+  "kind": "proposal",
+  "id": "unknown-op",
+  "source_contract": { "path": "a.yaml" },
+  "destination_contract": { "path": "b.yaml" },
+  "rules": [
+    {
+      "id": "explode-name",
+      "operation": "explode",
+      "source": {
+        "operation": { "method": "POST", "path": "/x" },
+        "location": "request",
+        "field": "name"
+      },
+      "destination": {
+        "operation": { "method": "POST", "path": "/x" },
+        "location": "request",
+        "field": "name"
+      },
+      "parameters": {},
+      "preconditions": [],
+      "postconditions": [],
+      "evidence": "should be rejected",
+      "lossiness": "unknown",
+      "reversibility": "unknown",
+      "fixture_refs": []
+    }
+  ]
+}

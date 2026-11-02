@@ -1,0 +1,52 @@
+{
+  "schema_version": "1",
+  "kind": "proposal",
+  "id": "example-array-filter",
+  "source_contract": {
+    "path": "packs/array-tags/base.openapi.yaml"
+  },
+  "destination_contract": {
+    "path": "packs/array-tags/next.openapi.yaml"
+  },
+  "rules": [
+    {
+      "id": "array-filter-request",
+      "operation": "array_filter",
+      "source": {
+        "operation": {
+          "method": "POST",
+          "path": "/tags",
+          "operation_id": "createTags"
+        },
+        "location": "request",
+        "field": "tags"
+      },
+      "destination": {
+        "operation": {
+          "method": "POST",
+          "path": "/tags",
+          "operation_id": "createTags"
+        },
+        "location": "request",
+        "field": "tags"
+      },
+      "parameters": {
+        "field": "tags",
+        "drop_null": true
+      },
+      "preconditions": [
+        "tags is an array"
+      ],
+      "postconditions": [
+        "null items removed"
+      ],
+      "evidence": "filter null tags",
+      "lossiness": "dropped",
+      "reversibility": "irreversible",
+      "fixture_refs": [
+        "request.positive.json",
+        "request.null-item.json"
+      ]
+    }
+  ]
+}

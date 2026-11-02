@@ -1,0 +1,30 @@
+{
+  "schema_version": "1",
+  "kind": "proposal",
+  "id": "schema-example",
+  "source_contract": { "path": "base.yaml" },
+  "destination_contract": { "path": "next.yaml" },
+  "rules": [
+    {
+      "id": "example-rename",
+      "operation": "rename",
+      "source": {
+        "operation": { "method": "POST", "path": "/users", "operation_id": "createUser" },
+        "location": "request",
+        "field": "id"
+      },
+      "destination": {
+        "operation": { "method": "POST", "path": "/users", "operation_id": "createUser" },
+        "location": "request",
+        "field": "user_id"
+      },
+      "parameters": { "from": "id", "to": "user_id" },
+      "preconditions": ["id is present", "user_id is absent"],
+      "postconditions": ["user_id holds the previous id value"],
+      "evidence": "schema example only; not bound to a contract",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": []
+    }
+  ]
+}

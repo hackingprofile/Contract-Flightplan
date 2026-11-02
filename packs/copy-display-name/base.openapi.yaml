@@ -1,0 +1,30 @@
+openapi: 3.0.3
+info:
+  title: Profiles API
+  version: "1.0.0"
+paths:
+  /profiles:
+    post:
+      operationId: createProfile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Profile"
+      responses:
+        "200":
+          description: created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+components:
+  schemas:
+    Profile:
+      type: object
+      additionalProperties: true
+      required: [name]
+      properties:
+        name:
+          type: string

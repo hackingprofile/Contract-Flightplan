@@ -1,0 +1,53 @@
+{
+  "schema_version": "1",
+  "kind": "proposal",
+  "id": "require-email",
+  "source_contract": { "path": "base.openapi.yaml" },
+  "destination_contract": { "path": "next.openapi.yaml" },
+  "rules": [
+    {
+      "id": "require-email-request",
+      "operation": "required_field",
+      "source": {
+        "operation": { "method": "POST", "path": "/mail", "operation_id": "createMail" },
+        "location": "request",
+        "field": "email"
+      },
+      "destination": {
+        "operation": { "method": "POST", "path": "/mail", "operation_id": "createMail" },
+        "location": "request",
+        "field": "email"
+      },
+      "parameters": {"field":"email"},
+      "preconditions": ["typed against source schema"],
+      "postconditions": ["typed against destination schema"],
+      "evidence": "request required_field",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": ["request.positive.json", "request.missing.json", "request.null.json"]
+    },
+    {
+      "id": "require-email-response",
+      "operation": "required_field",
+      "source": {
+        "operation": { "method": "POST", "path": "/mail", "operation_id": "createMail" },
+        "location": "response",
+        "response_status": "200",
+        "field": "email"
+      },
+      "destination": {
+        "operation": { "method": "POST", "path": "/mail", "operation_id": "createMail" },
+        "location": "response",
+        "response_status": "200",
+        "field": "email"
+      },
+      "parameters": {"field":"email"},
+      "preconditions": ["typed against source schema"],
+      "postconditions": ["typed against destination schema"],
+      "evidence": "response required_field",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": ["response.positive.json", "response.missing.json"]
+    }
+  ]
+}

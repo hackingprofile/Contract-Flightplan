@@ -1,0 +1,52 @@
+{
+  "schema_version": "1",
+  "kind": "proposal",
+  "id": "example-required-field",
+  "source_contract": {
+    "path": "packs/require-email/base.openapi.yaml"
+  },
+  "destination_contract": {
+    "path": "packs/require-email/next.openapi.yaml"
+  },
+  "rules": [
+    {
+      "id": "require-email-request",
+      "operation": "required_field",
+      "source": {
+        "operation": {
+          "method": "POST",
+          "path": "/mail",
+          "operation_id": "createMail"
+        },
+        "location": "request",
+        "field": "email"
+      },
+      "destination": {
+        "operation": {
+          "method": "POST",
+          "path": "/mail",
+          "operation_id": "createMail"
+        },
+        "location": "request",
+        "field": "email"
+      },
+      "parameters": {
+        "field": "email"
+      },
+      "preconditions": [
+        "typed against source schema"
+      ],
+      "postconditions": [
+        "typed against destination schema"
+      ],
+      "evidence": "request required_field",
+      "lossiness": "none",
+      "reversibility": "reversible",
+      "fixture_refs": [
+        "request.positive.json",
+        "request.missing.json",
+        "request.null.json"
+      ]
+    }
+  ]
+}
