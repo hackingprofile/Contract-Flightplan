@@ -26,6 +26,6 @@ libyaml-rs = "0.3"
 
 [dev-dependencies]
 # Used only by tests to validate packs, examples, and CLI outputs against schemas/v1.
-jsonschema = { version = "0.57", default-features = false }
+jsonschema = { version = "0.60", default-features = false }
 # Property tests for the parser and the mapping interpreter.
 proptest = { version = "1", default-features = false, features = ["std"] }
